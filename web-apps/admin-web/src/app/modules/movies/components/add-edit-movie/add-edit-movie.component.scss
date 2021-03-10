@@ -1,0 +1,15 @@
+.movie-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 25px;
+
+  .field-container {
+    width: 500px;
+
+    * {
+      width: 100%;
+    }
+  }
+}

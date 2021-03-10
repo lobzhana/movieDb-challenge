@@ -1,0 +1,86 @@
+<div class="movie-form">
+  <form>
+    <div class="field-container">
+      <input type="file" (change)="fileChanged($event.target?.files)" />
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Available In:</mat-label>
+        <mat-select>
+          <mat-option>A</mat-option>
+          <mat-option>B</mat-option>
+          <mat-option>C</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Year:</mat-label>
+        <mat-select>
+          <mat-option>0001</mat-option>
+          <mat-option>0002</mat-option>
+          <mat-option>0003</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Duration(Minutes)</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Country:</mat-label>
+        <mat-select>
+          <mat-option>Great Britan</mat-option>
+          <mat-option>Usa</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Studio:</mat-label>
+        <mat-select>
+          <mat-option>Miramax</mat-option>
+          <mat-option>Columbia</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>Director:</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </div>
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>IMDB Rating:</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="field-container">
+      <mat-form-field>
+        <mat-label>IMDB URL:</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </div>
+    <div class="form-footer">
+      <button type="submit" mat-raised-button color="primary">Create</button>
+      <button mat-raised-button>Cancel</button>
+    </div>
+  </form>
+</div>
