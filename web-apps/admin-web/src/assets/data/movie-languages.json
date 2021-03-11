@@ -1,0 +1,18 @@
+[
+  {
+    "code": "ka-Ge",
+    "name": "ქართული"
+  },
+  {
+    "id": "ru-Ru",
+    "name": "Русский"
+  },
+  {
+    "id": "en-Us",
+    "name": "English"
+  },
+  {
+    "id": "es-AR",
+    "name": "Spanish"
+  }
+]
