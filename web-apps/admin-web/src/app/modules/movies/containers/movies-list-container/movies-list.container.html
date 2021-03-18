@@ -1,0 +1,29 @@
+<div class="container">
+  <h1>List Of Movies</h1>
+  <div class="search-bar">
+    <div class="search-filters">
+      <app-search-filters
+        [languages]="languages | async"
+        [countries]="countries | async"
+        [studios]="studios | async"
+        [years]="years | async"
+        (apply)="applyFilters($event)"
+      ></app-search-filters>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="buttons">
+      <button (click)="addNew()" color="primary" mat-raised-button>
+        <mat-icon>add</mat-icon>
+        ADD NEW MOVIE
+      </button>
+    </div>
+  </div>
+  <div class="list-of-movies">
+    <app-movies-list
+      (edit)="edit($event)"
+      (archive)="archive($event)"
+      [movies]="movies | async"
+    ></app-movies-list>
+  </div>
+</div>

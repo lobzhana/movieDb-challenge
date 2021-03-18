@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { HttpProxyService } from '../../http-proxy.service';
 import {
   CountryModel,
   LanguageModel,
+  MovieFilterModel,
+  MovieListItemModel,
   MovieModel,
   StudioModel,
 } from '../models';
@@ -16,8 +20,11 @@ export class MoviesService {
     LIST_OF_COUNTRIES: 'assets/data/countries.json',
     LIST_OF_LANGUAGES: 'assets/data/movie-languages.json',
     LIST_OF_STUDIOS: 'assets/data/movie-studios.json',
+    YEARS: 'assets/data/movie-years.json',
     ADD_MOVIE: '',
     UPDATE_MOVIE: '',
+    SEARCH: 'assets/data/movie-search-result.json',
+    COVER: (id: string) => `assets/covers/${id}.jpg`,
   };
 
   constructor(private http: HttpProxyService) {}
@@ -34,7 +41,26 @@ export class MoviesService {
     return this.http.get<StudioModel[]>(this.endpoints.LIST_OF_STUDIOS);
   }
 
-  save(movieModel: MovieModel): Observable<any> {
+  getYears(): Observable<number[]> {
+    return this.http.get<number[]>(this.endpoints.YEARS);
+  }
+
+  search(filter: MovieFilterModel): Observable<MovieListItemModel[]> {
+    return this.http.get<MovieListItemModel[]>(this.endpoints.SEARCH).pipe(
+      map((result) =>
+        result?.map((item) => {
+          return {
+            ...item,
+            coverUrl: this.endpoints.COVER(item.id),
+          };
+        })
+      )
+    );
+  }
+
+  save(movieModel: MovieModel): Observable<{ success: true; message: string }> {
+    return of({ success: true, message: '' });
+
     if (movieModel.id) {
       return this.http.put(this.endpoints.UPDATE_MOVIE, movieModel);
     } else {

@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .search-bar {
+    .search-box {
+      width: 100%;
+    }
+
+    .search-filters {
+      width: 100%;
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+
+    .buttons {
+      width: 80%;
+    }
+  }
+
+  .list-of-movies {
+    display: flex;
+    justify-content: center;
+
+    app-movies-list {
+      display: block;
+      width: 80%;
+    }
+  }
+}

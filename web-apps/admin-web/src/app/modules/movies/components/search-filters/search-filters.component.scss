@@ -1,0 +1,21 @@
+.search-filters {
+  display: flex;
+  justify-content: center;
+
+  .form {
+    width: 80%;
+
+    .search-box {
+      width: 100%;
+    }
+
+    .form-field,
+    .form-btn {
+      margin: 0px 15px 0px 0px;
+    }
+
+    .flex-row {
+      margin-bottom: 5px;
+    }
+  }
+}

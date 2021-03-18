@@ -1,0 +1,68 @@
+<div class="search-filters">
+  <form
+    class="form"
+    *ngIf="filterForm"
+    [formGroup]="filterForm"
+    (submit)="applyFilters()"
+  >
+    <div class="flex-row">
+      <mat-form-field class="form-field search-box">
+        <mat-label>Search:</mat-label>
+        <input matInput formControlName="searchValue" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div class="flex-row">
+      <mat-form-field class="form-field">
+        <mat-label>Available In:</mat-label>
+        <mat-select formControlName="availableIn" multiple>
+          <mat-option *ngFor="let item of languages" [value]="item">{{
+            item.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>Year:</mat-label>
+        <mat-select formControlName="years" multiple>
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>Country:</mat-label>
+        <mat-select multiple formControlName="countries">
+          <mat-option *ngFor="let item of countries" [value]="item.code">{{
+            item.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="flex-row">
+      <mat-form-field class="form-field">
+        <mat-label>Studio:</mat-label>
+        <mat-select multiple formControlName="studios">
+          <mat-option *ngFor="let item of studios" [value]="item.id">{{
+            item.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field" formGroupName="imdb">
+        <mat-label>IMDB(from)</mat-label>
+        <input type="number" matInput formControlName="from" />
+      </mat-form-field>
+      <mat-form-field class="form-field" formGroupName="imdb">
+        <mat-label>IMDB(to)</mat-label>
+        <input type="number" matInput formControlName="to" />
+      </mat-form-field>
+    </div>
+
+    <div class="flex-row">
+      <button class="form-btn" type="submit" mat-raised-button>APPLY</button>
+      <button class="form-btn" mat-raised-button (click)="clearFilters()">
+        CLEAR
+      </button>
+    </div>
+  </form>
+</div>

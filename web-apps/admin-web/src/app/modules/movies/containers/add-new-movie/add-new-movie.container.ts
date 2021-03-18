@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import {
@@ -8,6 +9,7 @@ import {
   StudioModel,
 } from 'src/app/core/movies/models';
 import { MoviesService } from 'src/app/core/movies/services/movies.service';
+import { PATHS } from 'src/app/_shared/paths/paths';
 
 @UntilDestroy()
 @Component({
@@ -21,7 +23,7 @@ export class AddNewMovieContainerComponent implements OnInit {
   countries: Observable<CountryModel[]>;
   studios: Observable<StudioModel[]>;
 
-  constructor(private moviesService: MoviesService) {}
+  constructor(private moviesService: MoviesService, private router: Router) {}
 
   ngOnInit(): void {
     this.languages = this.moviesService.getLanguages();
@@ -37,8 +39,10 @@ export class AddNewMovieContainerComponent implements OnInit {
       .save(movie)
       .pipe(untilDestroyed(this))
       .subscribe(
-        () => {
-          console.log('movie added');
+        (response) => {
+          if (response.success) {
+            this.router.navigate([PATHS.MOVIES.LIST]);
+          }
         },
         (error) => {
           console.log('movie add failed');
