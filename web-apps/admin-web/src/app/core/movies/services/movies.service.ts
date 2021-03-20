@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { HttpProxyService } from '../../http-proxy.service';
 import {
   CountryModel,
+  EmptyMovieModel,
   LanguageModel,
   MovieFilterModel,
   MovieListItemModel,
@@ -55,6 +56,13 @@ export class MoviesService {
           };
         })
       )
+    );
+  }
+
+  getMovie(id: string): MovieModel {
+    this.search(null).pipe(
+      map((response) => response.find((item) => item.id === id)),
+      map((item) => EmptyMovieModel())
     );
   }
 
