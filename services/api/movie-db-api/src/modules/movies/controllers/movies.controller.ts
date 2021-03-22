@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+
 import { CountryModel } from '../models/country.model';
 import { LanguageModel } from '../models/language.model';
 import { MovieModel } from '../models/movie.model';
@@ -45,7 +46,7 @@ export class MoviesController {
   }
 
   @Put()
-  update(@Body() movie: MovieModel): Response[] {
+  update(@Body() movie: MovieModel): any {
     return [];
   }
 
@@ -62,11 +63,6 @@ export class MoviesController {
   }
 }
 
-export interface Response {
-  success: boolean;
-  message: string;
-}
-
 export interface MovieListItemModel {
   id: string;
   title: string;
@@ -74,5 +70,5 @@ export interface MovieListItemModel {
   year: number;
   duration: number;
   imdbRating: number;
-  coverUrl?: string;
+  cover?: string;
 }

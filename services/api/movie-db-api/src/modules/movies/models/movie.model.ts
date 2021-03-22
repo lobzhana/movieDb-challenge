@@ -9,5 +9,7 @@ export class MovieModel {
   studios: { id: string; name: string }[];
   director: string;
   imdb: { rating: number; url: string };
-  coverUrl: string;
+  cover: {
+    fileName: string;
+  };
 }

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StudioSchema } from 'src/modules/movies/schema/studio.schema';
+import { CoverController } from './controllers/covers.controller';
 import { MoviesController } from './controllers/movies.controller';
 import { CountryModel } from './models/country.model';
 import { LanguageModel } from './models/language.model';
@@ -35,7 +36,12 @@ import { MovieSchema } from './schema/movie.schema';
       },
     ]),
   ],
-  controllers: [MoviesController],
-  providers: [StudiosRepository, LanguagesRepository, CountriesRepository, MoviesRepository],
+  controllers: [MoviesController, CoverController],
+  providers: [
+    StudiosRepository,
+    LanguagesRepository,
+    CountriesRepository,
+    MoviesRepository,
+  ],
 })
 export class MoviesModule {}

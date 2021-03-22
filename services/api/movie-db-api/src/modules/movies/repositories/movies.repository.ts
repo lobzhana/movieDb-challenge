@@ -20,7 +20,7 @@ export class MoviesRepository {
         description: item.description,
         year: item.year,
         duration: item.duration,
-        coverUrl: item.coverUrl,
+        cover: item.cover?.fileName,
         imdbRating: item.imdb?.rating,
       };
     });

@@ -1,7 +1,6 @@
 import { Document, Schema } from 'mongoose';
 import { MovieModel } from '../models/movie.model';
 
-
 export type MovieDocument = MovieModel & Document;
 export const MovieSchema = new Schema(
   {
@@ -15,8 +14,9 @@ export const MovieSchema = new Schema(
     studios: [{ id: String, name: String }],
     director: String,
     imdb: { rating: String, url: String },
+    cover: { fileName: String },
   },
   {
     collection: 'movies',
-  }
+  },
 );
