@@ -1,7 +1,7 @@
 <div class="movie-form">
-  <form *ngIf="movieForm" [formGroup]="movieForm" (submit)="submit()">
+  <form *ngIf="movieForm && movie" [formGroup]="movieForm" (submit)="submit()">
     <div class="field-container">
-      <input type="file" (change)="setCover($event.target.files)" />
+      <input type="file" (change)="coverChanged($event.target.files)" />
     </div>
     <div class="field-container">
       <mat-form-field>
@@ -12,7 +12,11 @@
     <div class="field-container">
       <mat-form-field>
         <mat-label>Available In:</mat-label>
-        <mat-select formControlName="availableIn" multiple>
+        <mat-select
+          [compareWith]="compare.byId"
+          formControlName="availableIn"
+          multiple
+        >
           <mat-option *ngFor="let item of languages" [value]="item">{{
             item.name
           }}</mat-option>
@@ -44,8 +48,12 @@
     <div class="field-container">
       <mat-form-field>
         <mat-label>Country:</mat-label>
-        <mat-select multiple formControlName="countries">
-          <mat-option *ngFor="let item of countries" [value]="item.code">{{
+        <mat-select
+          multiple
+          [compareWith]="compare.byCode"
+          formControlName="countries"
+        >
+          <mat-option *ngFor="let item of countries" [value]="item">{{
             item.name
           }}</mat-option>
         </mat-select>
@@ -54,8 +62,12 @@
     <div class="field-container">
       <mat-form-field>
         <mat-label>Studio:</mat-label>
-        <mat-select multiple formControlName="studios">
-          <mat-option *ngFor="let item of studios" [value]="item.id">{{
+        <mat-select
+          multiple
+          formControlName="studios"
+          [compareWith]="compare.byId"
+        >
+          <mat-option *ngFor="let item of studios" [value]="item">{{
             item.name
           }}</mat-option>
         </mat-select>

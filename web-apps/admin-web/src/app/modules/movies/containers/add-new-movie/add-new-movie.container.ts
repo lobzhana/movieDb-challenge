@@ -4,6 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import {
   CountryModel,
+  EmptyMovieModel,
   LanguageModel,
   MovieModel,
   StudioModel,
@@ -22,6 +23,7 @@ export class AddNewMovieContainerComponent implements OnInit {
   languages: Observable<LanguageModel[]>;
   countries: Observable<CountryModel[]>;
   studios: Observable<StudioModel[]>;
+  movie: MovieModel = EmptyMovieModel();
 
   constructor(private moviesService: MoviesService, private router: Router) {}
 
@@ -32,9 +34,6 @@ export class AddNewMovieContainerComponent implements OnInit {
   }
 
   addMovie(movie: MovieModel): void {
-    console.log('movie to add:');
-    console.log(movie);
-
     this.moviesService
       .save(movie)
       .pipe(untilDestroyed(this))

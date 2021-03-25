@@ -16,7 +16,7 @@
       <mat-form-field class="form-field">
         <mat-label>Available In:</mat-label>
         <mat-select formControlName="availableIn" multiple>
-          <mat-option *ngFor="let item of languages" [value]="item">{{
+          <mat-option *ngFor="let item of languages" [value]="item.id">{{
             item.name
           }}</mat-option>
         </mat-select>
@@ -48,13 +48,13 @@
           }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field" formGroupName="imdb">
+      <mat-form-field class="form-field">
         <mat-label>IMDB(from)</mat-label>
-        <input type="number" matInput formControlName="from" />
+        <input type="number" matInput formControlName="imdbFrom" />
       </mat-form-field>
-      <mat-form-field class="form-field" formGroupName="imdb">
+      <mat-form-field class="form-field">
         <mat-label>IMDB(to)</mat-label>
-        <input type="number" matInput formControlName="to" />
+        <input type="number" matInput formControlName="imdbTo" />
       </mat-form-field>
     </div>
 

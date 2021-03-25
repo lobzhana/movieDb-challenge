@@ -1,8 +1,18 @@
 <h1>Edit Movie</h1>
-<app-add-edit-movie
-  [countries]="countries | async"
-  [studios]="studios | async"
-  [languages]="languages | async"
-  (save)="addMovie($event)"
-  (cancel)="cancel()"
-></app-add-edit-movie>
+<ng-container
+  *ngIf="{
+    movie: movie | async,
+    countries: countries | async,
+    studios: studios | async,
+    languages: languages | async
+  } as context"
+>
+  <app-add-edit-movie
+    [countries]="context.countries"
+    [studios]="context.studios"
+    [languages]="context.languages"
+    (save)="editMovie($event)"
+    [movie]="context.movie"
+    (cancel)="cancel()"
+  ></app-add-edit-movie>
+</ng-container>

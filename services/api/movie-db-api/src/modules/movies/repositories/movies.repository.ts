@@ -10,7 +10,7 @@ export class MoviesRepository {
   ) {}
 
   async search(filter: MovieFilterModel): Promise<MovieListItemModel[]> {
-    const query = this.dbModel.find();
+    const query = this.dbModel.find().sort({ createdAt: 'desc' });
     const response = await query.exec();
 
     return response.map((item) => {
@@ -35,20 +35,28 @@ export class MoviesRepository {
       await this.dbModel.updateOne({ id: movie.id }, { ...movie }).exec();
     } else {
       movie.id = uuid();
+      movie.createdAt = new Date();
       await this.dbModel.create({
         ...movie,
       });
     }
+
+    return { success: true, error: '' };
   }
 
-  async archive(id: string): Promise<any> {}
+  async delete(movieId: string): Promise<any> {
+    await this.dbModel.deleteOne({ id: movieId }).exec();
+
+    return { success: true };
+  }
 }
 
 export interface MovieFilterModel {
   searchValue: string;
-  availableIn: { code: string; language: string }[];
+  availableIn: string[];
   years: number[];
-  countries: { id: string; name: string }[];
-  studios: { id: string; name: string }[];
-  imdb: { from: number; to: number };
+  countries: string[];
+  studios: string[];
+  imdbFrom: number;
+  imdbTo: number;
 }

@@ -6,12 +6,7 @@
         year: {{ movie.year }}, duration: {{ movie.duration }} min
       </mat-card-subtitle>
     </mat-card-header>
-    <img
-      class="image"
-      [src]="movie.coverUrl"
-      mat-card-image
-      [alt]="movie.title"
-    />
+    <img class="image" [src]="movie.cover" mat-card-image [alt]="movie.title" />
     <mat-card-content>
       {{ movie.description?.substring(0, 100) }}...
     </mat-card-content>
@@ -20,9 +15,9 @@
         <mat-icon>edit</mat-icon>
         EDIT
       </button>
-      <button mat-button (click)="onArchive(movie)">
-        <mat-icon>delete_sweep</mat-icon>
-        ARCHIVE
+      <button mat-button (click)="onDelete(movie)">
+        <mat-icon>delete</mat-icon>
+        DELETE
       </button>
     </mat-card-actions>
     <mat-card-footer class="footer">

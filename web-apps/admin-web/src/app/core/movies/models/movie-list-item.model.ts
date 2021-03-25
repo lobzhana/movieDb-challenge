@@ -5,5 +5,5 @@ export interface MovieListItemModel {
   year: number;
   duration: number;
   imdbRating: number;
-  coverUrl: string;
+  cover: string;
 }

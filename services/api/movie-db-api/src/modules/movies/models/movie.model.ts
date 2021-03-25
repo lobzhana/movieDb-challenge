@@ -5,11 +5,12 @@ export class MovieModel {
   description: string;
   year: number;
   duration: number;
-  countries: { id: string; name: string }[];
+  countries: { code: string; name: string }[];
   studios: { id: string; name: string }[];
   director: string;
   imdb: { rating: number; url: string };
   cover: {
     fileName: string;
   };
+  createdAt: Date
 }

@@ -22,7 +22,7 @@
   <div class="list-of-movies">
     <app-movies-list
       (edit)="edit($event)"
-      (archive)="archive($event)"
+      (delete)="delete($event)"
       [movies]="movies | async"
     ></app-movies-list>
   </div>

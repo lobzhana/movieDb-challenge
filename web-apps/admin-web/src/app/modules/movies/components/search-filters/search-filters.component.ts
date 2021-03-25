@@ -35,10 +35,8 @@ export class SearchFiltersComponent implements OnInit {
       years: [],
       countries: [],
       studios: [],
-      imdb: this.fb.group({
-        from: [],
-        to: [],
-      }),
+      imdbFrom: [],
+      imdbTo: [],
     });
   }
 

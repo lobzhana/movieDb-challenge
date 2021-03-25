@@ -1,6 +1,8 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 import { HttpProxyService } from '../../http-proxy.service';
 import {
@@ -18,14 +20,17 @@ import {
 })
 export class MoviesService {
   endpoints = {
-    LIST_OF_COUNTRIES: 'assets/data/countries.json',
-    LIST_OF_LANGUAGES: 'assets/data/movie-languages.json',
-    LIST_OF_STUDIOS: 'assets/data/movie-studios.json',
-    YEARS: 'assets/data/movie-years.json',
-    ADD_MOVIE: '',
-    UPDATE_MOVIE: '',
-    SEARCH: 'assets/data/movie-search-result.json',
-    COVER: (id: string) => `assets/covers/${id}.jpg`,
+    LIST_OF_COUNTRIES: 'movies/countries',
+    LIST_OF_LANGUAGES: 'movies/languages',
+    LIST_OF_STUDIOS: 'movies/studios',
+    YEARS: 'movies/years',
+    ADD_MOVIE: 'movies',
+    DELETE_MOVIE: 'movies',
+    UPDATE_MOVIE: 'movies',
+    GET_MOVIE: (id) => `movies/${id}`,
+    SEARCH: 'movies/search',
+    COVER_PATH: (fileName: string) => `${environment.apiUri}covers/${fileName}`,
+    COVER_UPLOAD: 'covers',
   };
 
   constructor(private http: HttpProxyService) {}
@@ -46,33 +51,79 @@ export class MoviesService {
     return this.http.get<number[]>(this.endpoints.YEARS);
   }
 
-  search(filter: MovieFilterModel): Observable<MovieListItemModel[]> {
-    return this.http.get<MovieListItemModel[]>(this.endpoints.SEARCH).pipe(
-      map((result) =>
-        result?.map((item) => {
-          return {
-            ...item,
-            coverUrl: this.endpoints.COVER(item.id),
-          };
-        })
-      )
-    );
-  }
-
-  getMovie(id: string): MovieModel {
-    this.search(null).pipe(
-      map((response) => response.find((item) => item.id === id)),
-      map((item) => EmptyMovieModel())
-    );
-  }
-
   save(movieModel: MovieModel): Observable<{ success: true; message: string }> {
-    return of({ success: true, message: '' });
-
     if (movieModel.id) {
       return this.http.put(this.endpoints.UPDATE_MOVIE, movieModel);
     } else {
-      return this.http.put(this.endpoints.ADD_MOVIE, movieModel);
+      return this.http.post(this.endpoints.ADD_MOVIE, movieModel);
     }
+  }
+
+  delete(movieId: string): Observable<{ success: boolean }> {
+    return this.http.delete(`${this.endpoints.DELETE_MOVIE}/${movieId}`);
+  }
+
+  search(filter: MovieFilterModel): Observable<MovieListItemModel[]> {
+    return this.http
+      .get<MovieListItemModel[]>(this.endpoints.SEARCH, {
+        params: {
+          ...filter,
+        },
+      })
+      .pipe(
+        map((result) =>
+          result?.map((item) => {
+            return {
+              ...item,
+              cover: this.endpoints.COVER_PATH(item.cover),
+            };
+          })
+        )
+      );
+  }
+
+  getMovie(id: string): Observable<MovieModel> {
+    return this.http.get<MovieModel>(this.endpoints.GET_MOVIE(id));
+  }
+
+  uploadCover(fileToUpload: File): Observable<{ fileName: string }> {
+    return;
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class MovieCoverService {
+  endpoints = {
+    COVER_UPLOAD: 'covers',
+  };
+
+  constructor(private fileUploader: FileUploadService) {}
+
+  upload(fileToUpload: File): Observable<{ fileName: string }> {
+    return this.fileUploader.upload(
+      this.endpoints.COVER_UPLOAD,
+      fileToUpload,
+      'cover'
+    );
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class FileUploadService {
+  constructor(private http: HttpProxyService) {}
+
+  upload(
+    endpoint: string,
+    fileToUpload: File,
+    formKey: string
+  ): Observable<{ fileName: string }> {
+    const formData = new FormData();
+    formData.append(formKey, fileToUpload, fileToUpload.name);
+
+    return this.http.postFormData<{ fileName: string }>(endpoint, formData);
   }
 }

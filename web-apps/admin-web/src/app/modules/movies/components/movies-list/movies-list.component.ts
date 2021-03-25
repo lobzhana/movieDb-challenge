@@ -17,7 +17,7 @@ import { MovieListItemModel } from 'src/app/core/movies/models';
 export class MoviesListComponent implements OnInit {
   @Input() movies: MovieListItemModel[] = [];
   @Output() edit = new EventEmitter<MovieListItemModel>();
-  @Output() archive = new EventEmitter<MovieListItemModel>();
+  @Output() delete = new EventEmitter<MovieListItemModel>();
 
   constructor() {}
 
@@ -27,7 +27,7 @@ export class MoviesListComponent implements OnInit {
     this.edit.emit(item);
   }
 
-  onArchive(item: MovieListItemModel): void {
-    this.edit.emit(item);
+  onDelete(item: MovieListItemModel): void {
+    this.delete.emit(item);
   }
 }

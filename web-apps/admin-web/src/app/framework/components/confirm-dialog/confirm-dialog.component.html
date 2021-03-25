@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{ dataModel.title }}</h1>
+<div mat-dialog-content>
+  <p>{{ dataModel.question }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="nope()">{{ dataModel.nope }}</button>
+  <button mat-button cdkFocusInitial (click)="ok()">{{ dataModel.ok }}</button>
+</div>

@@ -11,7 +11,7 @@ export interface MovieModel {
   studios: { id: string; name: string }[];
   director: string;
   imdb: { rating: number; url: string };
-  cover: FileModel;
+  cover: { fileName: string };
 }
 
 export function EmptyMovieModel(): MovieModel {

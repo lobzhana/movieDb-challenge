@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {
@@ -12,6 +12,7 @@ import {
 import { MoviesService } from 'src/app/core/movies/services/movies.service';
 import { PATHS } from 'src/app/_shared/paths/paths';
 
+@UntilDestroy()
 @Component({
   selector: 'app-edit-movie.container',
   templateUrl: './edit-movie.container.html',
@@ -21,7 +22,7 @@ export class EditMovieContainerComponent implements OnInit {
   languages: Observable<LanguageModel[]>;
   countries: Observable<CountryModel[]>;
   studios: Observable<StudioModel[]>;
-  movie: MovieModel;
+  movie: Observable<MovieModel>;
 
   constructor(
     private moviesService: MoviesService,

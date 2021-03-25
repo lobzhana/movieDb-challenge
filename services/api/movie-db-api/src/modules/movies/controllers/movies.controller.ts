@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 
 import { CountryModel } from '../models/country.model';
 import { LanguageModel } from '../models/language.model';
@@ -37,29 +46,45 @@ export class MoviesController {
 
   @Get('years')
   getYears(): number[] {
-    return [1990, 1995, 2000, 2005, , 2010, 2015, 2020, 2021];
+    return [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2021];
   }
 
   @Post()
   async create(@Body() movie: MovieModel): Promise<any> {
+    console.log('received new movie:');
+    console.log(movie);
     return await this.moviesRepository.save(movie);
   }
 
   @Put()
-  update(@Body() movie: MovieModel): any {
-    return [];
+  async update(@Body() movie: MovieModel): Promise<any> {
+    console.log('received movie for update:');
+    console.log(movie);
+    return await this.moviesRepository.save(movie);
+  }
+
+  @Delete(':movieId')
+  async delete(@Param('movieId') movieId: string): Promise<any> {
+    return await this.moviesRepository.delete(movieId);
   }
 
   @Get('search')
   async search(
-    @Body() filter: MovieFilterModel,
+    @Query() filter: MovieFilterModel,
   ): Promise<MovieListItemModel[]> {
+    console.log('search requested with filters: ');
+    console.log(filter);
+
     return await this.moviesRepository.search(filter);
   }
 
   @Get(':id')
-  getMovie(@Param('id') id: string): MovieModel[] {
-    return [];
+  async getMovie(@Param('id') id: string): Promise<MovieModel> {
+    const response = await this.moviesRepository.get(id);
+
+    console.log(response);
+
+    return response;
   }
 }
 

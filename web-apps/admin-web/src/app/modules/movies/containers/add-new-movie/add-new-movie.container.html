@@ -4,5 +4,6 @@
   [studios]="studios | async"
   [languages]="languages | async"
   (save)="addMovie($event)"
+  [movie]="movie"
   (cancel)="cancel()"
 ></app-add-edit-movie>
