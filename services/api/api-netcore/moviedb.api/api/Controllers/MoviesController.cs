@@ -188,6 +188,14 @@ namespace api.Controllers
 
             }
 
+            var document = await GetAsync(model.MovieId);
+            if (document == null)
+            {
+                return new Result(false, "Movie not found");
+            }
+
+            model.CreateAt = document.CreateAt;
+
             await collection.ReplaceOneAsync
             (
                 Builders<MovieDataModel>.Filter.Eq(doc => doc.MovieId, model.MovieId),
