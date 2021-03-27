@@ -20,17 +20,17 @@ import {
 })
 export class MoviesService {
   endpoints = {
-    LIST_OF_COUNTRIES: 'movies/countries',
-    LIST_OF_LANGUAGES: 'movies/languages',
-    LIST_OF_STUDIOS: 'movies/studios',
+    LIST_OF_COUNTRIES: 'countries',
+    LIST_OF_LANGUAGES: 'languages',
+    LIST_OF_STUDIOS: 'studios',
     YEARS: 'movies/years',
     ADD_MOVIE: 'movies',
     DELETE_MOVIE: 'movies',
     UPDATE_MOVIE: 'movies',
     GET_MOVIE: (id) => `movies/${id}`,
     SEARCH: 'movies/search',
-    COVER_PATH: (fileName: string) => `${environment.apiUri}covers/${fileName}`,
-    COVER_UPLOAD: 'covers',
+    COVER_PATH: (fileName: string) =>
+      `${environment.apiUri}movies/cover/${fileName}`,
   };
 
   constructor(private http: HttpProxyService) {}
@@ -51,7 +51,7 @@ export class MoviesService {
     return this.http.get<number[]>(this.endpoints.YEARS);
   }
 
-  save(movieModel: MovieModel): Observable<{ success: true; message: string }> {
+  save(movieModel: MovieModel): Observable<{ ok: true; message: string }> {
     if (movieModel.id) {
       return this.http.put(this.endpoints.UPDATE_MOVIE, movieModel);
     } else {
@@ -59,7 +59,7 @@ export class MoviesService {
     }
   }
 
-  delete(movieId: string): Observable<{ success: boolean }> {
+  delete(movieId: string): Observable<{ ok: boolean }> {
     return this.http.delete(`${this.endpoints.DELETE_MOVIE}/${movieId}`);
   }
 
@@ -96,7 +96,7 @@ export class MoviesService {
 })
 export class MovieCoverService {
   endpoints = {
-    COVER_UPLOAD: 'covers',
+    COVER_UPLOAD: 'movies/upload_cover',
   };
 
   constructor(private fileUploader: FileUploadService) {}

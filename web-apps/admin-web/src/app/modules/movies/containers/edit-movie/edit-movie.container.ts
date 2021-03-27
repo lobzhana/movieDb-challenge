@@ -44,9 +44,9 @@ export class EditMovieContainerComponent implements OnInit {
     this.moviesService
       .save(movie)
       .pipe(untilDestroyed(this))
-      .pipe(catchError((err, o) => of({ success: false, message: err })))
+      .pipe(catchError((err, o) => of({ ok: false, message: err })))
       .subscribe((response) => {
-        if (response.success) {
+        if (response.ok) {
           this.router.navigate([PATHS.MOVIES.LIST]);
         } else {
           console.log(response.message);

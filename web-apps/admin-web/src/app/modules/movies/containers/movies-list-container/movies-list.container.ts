@@ -70,7 +70,7 @@ export class MoviesListContainerComponent implements OnInit {
         untilDestroyed(this)
       )
       .subscribe((response) => {
-        if (response.success) {
+        if (response.ok) {
           this.refresh();
         } else {
           console.log('failed to delete');

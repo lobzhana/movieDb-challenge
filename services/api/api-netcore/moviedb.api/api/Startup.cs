@@ -1,3 +1,4 @@
+using api.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,12 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IMovieRepository, MoviesRepository>();
+            services.AddScoped<IStudiosRepository, StudiosRepository>();
+            services.AddScoped<ILanguagesRepository, LanguagesRepository>();
+            services.AddScoped<ICountriesRepository, CountriesRepository>();
+
+            //services.AddCors();
             services.AddControllers();
         }
 
@@ -35,9 +43,12 @@ namespace api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
+            app.UseCors
+            (
+                policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+            );
 
-            app.UseAuthorization();
+            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {

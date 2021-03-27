@@ -39,7 +39,7 @@ export class AddNewMovieContainerComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         (response) => {
-          if (response.success) {
+          if (response.ok) {
             this.router.navigate([PATHS.MOVIES.LIST]);
           }
         },

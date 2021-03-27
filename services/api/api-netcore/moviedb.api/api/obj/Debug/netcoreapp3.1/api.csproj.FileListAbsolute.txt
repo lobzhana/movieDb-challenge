@@ -6,7 +6,6 @@ C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\ap
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\api.runtimeconfig.dev.json
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\api.dll
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\api.pdb
-C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.csprojAssemblyReference.cache
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.AssemblyInfoInputs.cache
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.AssemblyInfo.cs
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.csproj.CoreCompileInputs.cache
@@ -18,3 +17,18 @@ C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\ap
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.dll
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.pdb
 C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.genruntimeconfig.cache
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\DnsClient.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\MongoDB.Bson.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\MongoDB.Driver.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\MongoDB.Driver.Core.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\MongoDB.Libmongocrypt.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\SharpCompress.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\runtimes\win\native\libzstd.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\runtimes\win\native\snappy32.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\runtimes\win\native\snappy64.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\runtimes\linux\native\libmongocrypt.so
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\runtimes\osx\native\libmongocrypt.dylib
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\bin\Debug\netcoreapp3.1\runtimes\win\native\mongocrypt.dll
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.csproj.CopyComplete
+C:\_sources\projects\challenges\movie-db\services\api\api-netcore\moviedb.api\api\obj\Debug\netcoreapp3.1\api.csprojAssemblyReference.cache
