@@ -1,14 +1,14 @@
 import { FileModel } from '../../models/file.model';
 
 export interface MovieModel {
-  id: string;
+  movieId: string;
   title: string;
   availableIn: { code: string; language: string }[];
   description: string;
   year: number;
   duration: number;
-  countries: { id: string; name: string }[];
-  studios: { id: string; name: string }[];
+  countries: { code: string; name: string }[];
+  studios: { uId: string; name: string }[];
   director: string;
   imdb: { rating: number; url: string };
   cover: { fileName: string };
@@ -16,7 +16,7 @@ export interface MovieModel {
 
 export function EmptyMovieModel(): MovieModel {
   return {
-    id: '',
+    movieId: '',
     title: '',
     availableIn: [],
     description: '',

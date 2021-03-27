@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -63,7 +62,7 @@ namespace api.Controllers
             var result = await repository.UpdateAsync(model);
             if (result.Ok)
             {
-                return Ok();
+                return Ok(result);
             }
 
             return BadRequest(result.Message);
@@ -138,7 +137,7 @@ namespace api.Controllers
 
     public interface IMovieRepository
     {
-        Task<MovieListItemDataModel[]> SearchAsync(MovieSearchFilter searchFilter);
+        Task<List<MovieListItemDataModel>> SearchAsync(MovieSearchFilter searchFilter);
         Task<MovieDataModel> GetAsync(string movieId);
         Task<Result> CreateAsync(MovieDataModel model);
         Task<Result> UpdateAsync(MovieDataModel model);
@@ -222,35 +221,63 @@ namespace api.Controllers
             return result;
         }
 
-        public async Task<MovieListItemDataModel[]> SearchAsync(MovieSearchFilter searchFilter)
+        public async Task<List<MovieListItemDataModel>> SearchAsync(MovieSearchFilter searchFilter)
         {
-            var documents = await collection
-                .Find(Builders<MovieDataModel>.Filter.Empty)
-                .Sort(Builders<MovieDataModel>.Sort.Descending(doc => doc.CreateAt))
-                .Project<MovieDataModel>
-                (
-                    Builders<MovieDataModel>.Projection
-                    .Include("movieId")
-                    .Include("title")
-                    .Include("description")
-                    .Include("year")
-                    .Include("duration")
-                    .Include("imdb")
-                    .Include("cover")
-                )
-                .ToListAsync();
+            var query = collection.AsQueryable();
+            query = ApplyFilters(query, searchFilter);
 
+            return
+                await query.OrderByDescending(doc => doc.CreateAt)
+                .Select(doc => new MovieListItemDataModel
+                {
+                    Id = doc.MovieId,
+                    Title = doc.Title,
+                    Cover = doc.Cover != null ? doc.Cover.FileName : string.Empty,
+                    Description = doc.Description,
+                    Duration = doc.Duration,
+                    ImdbRating = doc.Imdb != null ? doc.Imdb.Rating : 0,
+                    Year = doc.Year
+                }).ToListAsync();
+        }
 
-            return documents.Select(doc => new MovieListItemDataModel
+        private IMongoQueryable<MovieDataModel> ApplyFilters(IMongoQueryable<MovieDataModel> query, MovieSearchFilter searchFilter)
+        {
+            if (!string.IsNullOrWhiteSpace(searchFilter.SearchValue))
             {
-                Id = doc.MovieId,
-                Title = doc.Title,
-                Cover = doc.Cover?.FileName,
-                Description = doc.Description,
-                Duration = doc.Duration,
-                ImdbRating = doc.Imdb != null ? doc.Imdb.Rating : 0,
-                Year = doc.Year
-            }).ToArray();
+                query = query.Where(doc => doc.Title.Contains(searchFilter.SearchValue));
+            }
+
+            if (searchFilter.AvailableIn != null && searchFilter.AvailableIn.Any())
+            {
+                query = query.Where(doc => doc.AvailableIn.Any(lang => searchFilter.AvailableIn.Contains(lang.Code)));
+            }
+
+            if (searchFilter.Years != null && searchFilter.Years.Any())
+            {
+                query = query.Where(doc => searchFilter.Years.Contains(doc.Year));
+            }
+
+            if (searchFilter.Countries != null && searchFilter.Countries.Any())
+            {
+                query = query.Where(doc => doc.Countries.Any(country => searchFilter.Countries.Contains(country.Code)));
+            }
+
+            if (searchFilter.Studios != null && searchFilter.Studios.Any())
+            {
+                query = query.Where(doc => doc.Studios.Any(studio => searchFilter.Studios.Contains(studio.UId)));
+            }
+
+            if (searchFilter.ImdbFrom != null)
+            {
+                query = query.Where(doc => doc.Imdb.Rating >= searchFilter.ImdbFrom);
+            }
+
+            if (searchFilter.ImdbTo != null)
+            {
+                query = query.Where(doc => doc.Imdb.Rating <= searchFilter.ImdbTo);
+            }
+
+            return query;
         }
     }
 
@@ -509,5 +536,18 @@ namespace api.Controllers
 
     public class MovieSearchFilter
     {
+        public string SearchValue { get; set; }
+
+        public string[] AvailableIn { get; set; }
+
+        public int[] Years { get; set; }
+
+        public string[] Countries { get; set; }
+
+        public string[] Studios { get; set; }
+
+        public decimal? ImdbFrom { get; set; }
+
+        public decimal? ImdbTo { get; set; }
     }
 }

@@ -16,7 +16,7 @@
       <mat-form-field class="form-field">
         <mat-label>Available In:</mat-label>
         <mat-select formControlName="availableIn" multiple>
-          <mat-option *ngFor="let item of languages" [value]="item.id">{{
+          <mat-option *ngFor="let item of languages" [value]="item.code">{{
             item.name
           }}</mat-option>
         </mat-select>
@@ -43,7 +43,7 @@
       <mat-form-field class="form-field">
         <mat-label>Studio:</mat-label>
         <mat-select multiple formControlName="studios">
-          <mat-option *ngFor="let item of studios" [value]="item.id">{{
+          <mat-option *ngFor="let item of studios" [value]="item.uId">{{
             item.name
           }}</mat-option>
         </mat-select>

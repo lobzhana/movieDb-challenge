@@ -33,16 +33,15 @@ export class AddEditMovieComponent implements OnChanges {
   @Input() countries: CountryModel[];
   @Input() studios: StudioModel[];
   @Input() languages: LanguageModel[];
-
   @Output() save = new EventEmitter<MovieModel>();
   @Output() cancel = new EventEmitter();
-
   movieForm: FormGroup;
 
   compare = {
-    byId: (a: { id: string }, b: { id: string }) => a.id === b.id,
+    byId: (a: { uId: string }, b: { uId: string }) => a.uId === b.uId,
     byCode: (a: { code: string }, b: { code: string }) => a.code === b.code,
   };
+  isEditMode = (): boolean => !!this.movie.movieId;
 
   constructor(
     private fb: FormBuilder,
@@ -60,7 +59,7 @@ export class AddEditMovieComponent implements OnChanges {
 
   createFormSchema(movieModel: MovieModel): FormGroup {
     const formGroup = this.fb.group({
-      id: [movieModel.id],
+      movieId: [movieModel.movieId],
       title: [movieModel.title, Validators.required],
       availableIn: [
         movieModel.availableIn ?? [],
@@ -97,6 +96,7 @@ export class AddEditMovieComponent implements OnChanges {
     }
 
     const formValue = this.movieForm.value as MovieModel;
+
     this.save.emit(formValue);
   }
 

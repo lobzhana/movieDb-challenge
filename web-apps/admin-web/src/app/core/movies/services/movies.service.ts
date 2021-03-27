@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { cleanObject } from 'src/app/_shared/tools/object-tools';
 import { environment } from 'src/environments/environment';
 
 import { HttpProxyService } from '../../http-proxy.service';
@@ -52,7 +53,7 @@ export class MoviesService {
   }
 
   save(movieModel: MovieModel): Observable<{ ok: true; message: string }> {
-    if (movieModel.id) {
+    if (movieModel.movieId) {
       return this.http.put(this.endpoints.UPDATE_MOVIE, movieModel);
     } else {
       return this.http.post(this.endpoints.ADD_MOVIE, movieModel);
@@ -67,7 +68,7 @@ export class MoviesService {
     return this.http
       .get<MovieListItemModel[]>(this.endpoints.SEARCH, {
         params: {
-          ...filter,
+          ...cleanObject(filter),
         },
       })
       .pipe(

@@ -1,5 +1,4 @@
-
 export interface StudioModel {
-  id: string;
+  uId: string;
   name: string;
 }
