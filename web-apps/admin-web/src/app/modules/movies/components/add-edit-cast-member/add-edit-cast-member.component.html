@@ -1,0 +1,46 @@
+<h1 matDialogTitle>{{ isEditMode() ? "Edit" : "Add" }} Cast Member</h1>
+<mat-dialog-content>
+  <div class="cast-form">
+    <form *ngIf="castMember" [formGroup]="castForm" (submit)="submit()">
+      <div class="field-container">
+        <input type="file" (change)="photoChanged($event.target.files)" />
+      </div>
+      <div class="field-container">
+        <mat-form-field>
+          <mat-label>FirstName</mat-label>
+          <input type="text" matInput formControlName="firstName" />
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <mat-form-field>
+          <mat-label>LastName</mat-label>
+          <input type="text" matInput formControlName="lastName" />
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <mat-form-field>
+          <mat-label>BirthDate</mat-label>
+          <input type="date" matInput formControlName="birthDate" />
+        </mat-form-field>
+      </div>
+
+      <div class="field-container">
+        <mat-form-field>
+          <mat-label>Height(cm)</mat-label>
+          <input type="number" matInput formControlName="height" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-footer">
+        <button class="btn" type="submit" mat-raised-button color="primary">
+          Save
+        </button>
+        <button class="btn" mat-raised-button (click)="cancel.emit()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>

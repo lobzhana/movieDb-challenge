@@ -6,6 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
 
 const modules = [
   MatInputModule,
@@ -15,6 +18,9 @@ const modules = [
   MatCardModule,
   MatIconModule,
   MatDialogModule,
+  MatMenuModule,
+  MatAutocompleteModule,
+  MatChipsModule,
 ];
 
 @NgModule({

@@ -1,0 +1,8 @@
+<app-add-cast-member-to-movie
+  [searchResult]="searchResult | async"
+  [newCastMember]="newCastMember | async"
+  (searchValueChanged)="searchValueChanged($event)"
+  (addNewCast)="addNewCast()"
+  (submited)="submited($event)"
+>
+</app-add-cast-member-to-movie>

@@ -1,0 +1,21 @@
+.cast-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 300px;
+
+  .field-container {
+    width: 300px;
+
+    * {
+      width: 100%;
+    }
+  }
+
+  .form-footer {
+    .btn {
+      margin-right: 15px;
+    }
+  }
+}

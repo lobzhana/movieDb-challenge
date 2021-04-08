@@ -1,0 +1,28 @@
+<div class="container">
+  <mat-card class="card" *ngFor="let castMember of castMembers">
+    <mat-card-header class="header">
+      <mat-card-title>
+        {{ castMember.firstName }} {{ castMember.lastName }}
+      </mat-card-title>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-menu class="menu" #menu="matMenu">
+      <button mat-menu-item (click)="edit.emit(castMember)">
+        <mat-icon>edit</mat-icon>
+        EDIT
+      </button>
+      <button mat-menu-item (click)="remove.emit(castMember)">
+        <mat-icon>delete</mat-icon>
+        DELETE
+      </button>
+    </mat-menu>
+    <img
+      class="image"
+      [src]="castMember.photo.fileName | toImgSrc"
+      mat-card-image
+      [alt]="castMember.firstName"
+    />
+  </mat-card>
+</div>

@@ -23,6 +23,7 @@
     <app-movies-list
       (edit)="edit($event)"
       (delete)="delete($event)"
+      (details)="viewDetails($event)"
       [movies]="movies | async"
     ></app-movies-list>
   </div>

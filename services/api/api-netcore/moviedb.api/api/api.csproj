@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Uploads\Covers\" />
+    <Folder Include="Uploads\CastPhotos\" />
   </ItemGroup>
 
 

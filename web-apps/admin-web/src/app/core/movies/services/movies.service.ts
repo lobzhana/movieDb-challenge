@@ -8,7 +8,6 @@ import { environment } from 'src/environments/environment';
 import { HttpProxyService } from '../../http-proxy.service';
 import {
   CountryModel,
-  EmptyMovieModel,
   LanguageModel,
   MovieFilterModel,
   MovieListItemModel,
@@ -30,8 +29,6 @@ export class MoviesService {
     UPDATE_MOVIE: 'movies',
     GET_MOVIE: (id) => `movies/${id}`,
     SEARCH: 'movies/search',
-    COVER_PATH: (fileName: string) =>
-      `${environment.apiUri}movies/cover/${fileName}`,
   };
 
   constructor(private http: HttpProxyService) {}
@@ -65,66 +62,35 @@ export class MoviesService {
   }
 
   search(filter: MovieFilterModel): Observable<MovieListItemModel[]> {
-    return this.http
-      .get<MovieListItemModel[]>(this.endpoints.SEARCH, {
-        params: {
-          ...cleanObject(filter),
-        },
-      })
-      .pipe(
-        map((result) =>
-          result?.map((item) => {
-            return {
-              ...item,
-              cover: this.endpoints.COVER_PATH(item.cover),
-            };
-          })
-        )
-      );
+    return this.http.get<MovieListItemModel[]>(this.endpoints.SEARCH, {
+      params: {
+        ...cleanObject(filter),
+      },
+    });
   }
 
   getMovie(id: string): Observable<MovieModel> {
     return this.http.get<MovieModel>(this.endpoints.GET_MOVIE(id));
   }
-
-  uploadCover(fileToUpload: File): Observable<{ fileName: string }> {
-    return;
-  }
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class MovieCoverService {
-  endpoints = {
-    COVER_UPLOAD: 'movies/upload_cover',
-  };
-
-  constructor(private fileUploader: FileUploadService) {}
-
-  upload(fileToUpload: File): Observable<{ fileName: string }> {
-    return this.fileUploader.upload(
-      this.endpoints.COVER_UPLOAD,
-      fileToUpload,
-      'cover'
-    );
-  }
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class FileUploadService {
+export class ImageUploadService {
   constructor(private http: HttpProxyService) {}
 
-  upload(
-    endpoint: string,
-    fileToUpload: File,
-    formKey: string
-  ): Observable<{ fileName: string }> {
+  upload(fileToUpload: File): Observable<{ fileName: string }> {
     const formData = new FormData();
-    formData.append(formKey, fileToUpload, fileToUpload.name);
+    formData.append('photo', fileToUpload, fileToUpload.name);
 
-    return this.http.postFormData<{ fileName: string }>(endpoint, formData);
+    return this.http.postFormData<{ fileName: string }>(
+      'photos/upload',
+      formData
+    );
+  }
+
+  getUri(fileName: string): string {
+    return `${environment.apiUri}photos/${fileName}`;
   }
 }

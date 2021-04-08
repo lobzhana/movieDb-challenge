@@ -1,13 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { filter, mergeMap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import {
   CountryModel,
   LanguageModel,
@@ -15,9 +10,16 @@ import {
   MovieListItemModel,
   StudioModel,
 } from 'src/app/core/movies/models';
-import { MoviesService } from 'src/app/core/movies/services/movies.service';
 import { ConfirmDialogServiceService } from 'src/app/framework/components/confirm-dialog-service.service';
 import { PATHS } from 'src/app/_shared/paths/paths';
+import { Store } from '@ngrx/store';
+import { MovieModuleState } from '../../store/state';
+import {
+  deleteMovie,
+  moviesList,
+  searchFilterActions,
+} from '../../store/movies/actions';
+import { moviesSelectors } from '../../store/movies/selectors';
 
 @UntilDestroy()
 @Component({
@@ -35,19 +37,21 @@ export class MoviesListContainerComponent implements OnInit {
   filter: MovieFilterModel;
 
   constructor(
-    private moviesService: MoviesService,
     private router: Router,
     private confirm: ConfirmDialogServiceService,
-    private cd: ChangeDetectorRef
+    private store: Store<MovieModuleState>
   ) {
-    this.languages = moviesService.getLanguages();
-    this.countries = moviesService.getCountries();
-    this.studios = moviesService.getStudios();
-    this.years = moviesService.getYears();
-    this.movies = moviesService.search(null);
+    this.languages = store.select(moviesSelectors.languages);
+    this.countries = store.select(moviesSelectors.countries);
+    this.studios = store.select(moviesSelectors.studios);
+    this.years = store.select(moviesSelectors.years);
+    this.movies = store.select(moviesSelectors.list);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.dispatch(moviesList.get());
+    this.store.dispatch(searchFilterActions.getData());
+  }
 
   addNew(): void {
     this.router.navigate([PATHS.MOVIES.ADD_NEW]);
@@ -55,6 +59,10 @@ export class MoviesListContainerComponent implements OnInit {
 
   edit(item: MovieListItemModel): void {
     this.router.navigate([PATHS.MOVIES.EDIT(item.id)]);
+  }
+
+  viewDetails(item: MovieListItemModel): void {
+    this.router.navigate([PATHS.MOVIES.DETAILS(item.id)]);
   }
 
   delete(item: MovieListItemModel): void {
@@ -65,26 +73,15 @@ export class MoviesListContainerComponent implements OnInit {
         ok: 'Yes, Delete',
       })
       .pipe(
-        filter((ok) => ok),
-        mergeMap(() => this.moviesService.delete(item.id)),
-        untilDestroyed(this)
+        untilDestroyed(this),
+        filter((ok) => ok)
       )
-      .subscribe((response) => {
-        if (response.ok) {
-          this.refresh();
-        } else {
-          console.log('failed to delete');
-        }
+      .subscribe(() => {
+        this.store.dispatch(deleteMovie({ movieId: item.id }));
       });
   }
 
-  refresh(): void {
-    this.movies = this.moviesService.search(this.filter);
-    this.cd.detectChanges();
-  }
-
   applyFilters(model: MovieFilterModel): void {
-    this.filter = { ...model };
-    this.refresh();
+    this.store.dispatch(searchFilterActions.apply({ filter: model }));
   }
 }

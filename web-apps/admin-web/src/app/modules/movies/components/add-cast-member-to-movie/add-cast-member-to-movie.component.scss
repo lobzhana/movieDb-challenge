@@ -1,0 +1,15 @@
+.search-form {
+  width: 500px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .selected-cast {
+    margin: 15px 0px 25px 0px;
+  }
+
+  .new-cast-member {
+    cursor: pointer;
+  }
+}

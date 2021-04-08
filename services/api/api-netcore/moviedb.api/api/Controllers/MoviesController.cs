@@ -89,13 +89,18 @@ namespace api.Controllers
 
             return Ok(years);
         }
+    }
 
-        [HttpPost("upload_cover")]
-        public async Task<IActionResult> UploadCoverAsync([FromForm(Name = "cover")] IFormFile formFile)
+    [ApiController]
+    [Route("photos")]
+    public class PhotosController : ControllerBase
+    {
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadAsync([FromForm(Name = "photo")] IFormFile formFile)
         {
             var randomName = $"{Convert.ToString(Guid.NewGuid())}-{formFile.FileName}";
 
-            var destination = Path.Combine("Uploads", "Covers", randomName);
+            var destination = Path.Combine("Uploads", "Photos", randomName);
 
             using (var fs = new FileStream(destination, FileMode.Create))
             {
@@ -108,14 +113,14 @@ namespace api.Controllers
             return Ok(new { FileName = randomName }); ;
         }
 
-        [HttpGet("cover/{fileName}")]
-        public async Task<IActionResult> GetCoverAsync(string fileName)
+        [HttpGet("{fileName}")]
+        public IActionResult GetCover(string fileName)
         {
             var destination = Path.Combine
                 (
                     Directory.GetCurrentDirectory(),
                     "Uploads",
-                    "Covers",
+                    "Photos",
                     fileName
                 );
 
@@ -130,6 +135,7 @@ namespace api.Controllers
         }
     }
 
+
     public class UploadDataModel
     {
         public IFormFile Cover { get; set; }
@@ -142,6 +148,8 @@ namespace api.Controllers
         Task<Result> CreateAsync(MovieDataModel model);
         Task<Result> UpdateAsync(MovieDataModel model);
         Task<Result> DeleteAsync(string movieId);
+        Task<Result> AddCastMembersAsync(string movieId, List<string> castMemberIds);
+        Task<Result> RemoveCastMemberAsync(string movieId, string castMemberId);
     }
 
     public static class MongoDbConnectionFactory
@@ -287,6 +295,29 @@ namespace api.Controllers
 
             return query;
         }
+
+        public async Task<Result> AddCastMembersAsync(string movieId, List<string> castMemberIds)
+        {
+            var result = await collection.UpdateOneAsync
+                (
+                    Builders<MovieDataModel>.Filter.Eq(doc => doc.MovieId, movieId),
+                    Builders<MovieDataModel>.Update.PushEach(doc => doc.CastMemberIds, castMemberIds)
+                );
+
+
+            return new Result(result.ModifiedCount >= 1);
+        }
+
+        public async Task<Result> RemoveCastMemberAsync(string movieId, string castMemberId)
+        {
+            var result = await collection.UpdateOneAsync
+                       (
+                           Builders<MovieDataModel>.Filter.Eq(doc => doc.MovieId, movieId),
+                           Builders<MovieDataModel>.Update.PullAll(doc => doc.CastMemberIds, new List<string>() { castMemberId })
+                       );
+
+            return new Result(result.ModifiedCount > 0);
+        }
     }
 
     public class Result
@@ -295,6 +326,7 @@ namespace api.Controllers
 
         public string Message { get; set; }
 
+        public object Data { get; set; }
 
         public Result(bool ok)
         {
@@ -492,6 +524,9 @@ namespace api.Controllers
 
         [BsonElement("createdAt")]
         public DateTime CreateAt { get; set; }
+
+        [BsonElement("castMemberIds")]
+        public List<string> CastMemberIds { get; set; }
     }
 
     [BsonIgnoreExtraElements]

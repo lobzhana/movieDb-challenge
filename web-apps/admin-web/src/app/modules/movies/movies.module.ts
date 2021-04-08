@@ -12,6 +12,20 @@ import { MoviesListComponent } from './components/movies-list/movies-list.compon
 import { MovieListItemComponent } from './components/movie-list-item/movie-list-item.component';
 import { EditMovieContainerComponent } from './containers/edit-movie/edit-movie.container';
 import { ComponentsModule } from 'src/app/framework/components/components.module';
+import { createReducer, StoreModule } from '@ngrx/store';
+import { movieActionReducers } from './store/movies/reducer';
+import { castActionReducers } from './store/cast/reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { MoviesModuleEffects } from './store/movies/effects';
+import { DetailsContainerComponent } from './containers/movie-details/movie-details.container';
+import { AddEditCastMemberComponent } from './components/add-edit-cast-member/add-edit-cast-member.component';
+import { CastMembersEffects } from './store/cast/effects';
+import { AddCastMemberToMovieComponent } from './components/add-cast-member-to-movie/add-cast-member-to-movie.component';
+import { defaultMovieModuleState } from './store/state';
+import { AddCastMemberToMovieDialogContainerComponent } from './containers/dialogs/add-cast-member-to-movie-dialog/add-cast-member-to-movie-dialog.container';
+import { AddEditCastMemberDialogContainerComponent } from './containers/dialogs/add-new-cast-member-dialog/add-edit-cast-member-dialog.container';
+import { CastMembersListComponent } from './components/cast-members-list/cast-members-list.component';
+import { PipesModule } from 'src/app/framework/pipes/pipes.module';
 
 const routes: Routes = [
   {
@@ -30,6 +44,10 @@ const routes: Routes = [
     path: 'edit/:id',
     component: EditMovieContainerComponent,
   },
+  {
+    path: 'details/:movieId',
+    component: DetailsContainerComponent,
+  },
 ];
 
 @NgModule({
@@ -42,12 +60,28 @@ const routes: Routes = [
     MoviesListComponent,
     MovieListItemComponent,
     EditMovieContainerComponent,
+    DetailsContainerComponent,
+    AddEditCastMemberComponent,
+    AddCastMemberToMovieComponent,
+    AddCastMemberToMovieDialogContainerComponent,
+    AddEditCastMemberDialogContainerComponent,
+    CastMembersListComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes),
     MaterialModule,
+    PipesModule,
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(
+      'movies',
+      createReducer(
+        defaultMovieModuleState,
+        ...movieActionReducers,
+        ...castActionReducers
+      )
+    ),
+    EffectsModule.forFeature([MoviesModuleEffects, CastMembersEffects]),
     ComponentsModule,
   ],
 })

@@ -18,6 +18,7 @@ export class MoviesListComponent implements OnInit {
   @Input() movies: MovieListItemModel[] = [];
   @Output() edit = new EventEmitter<MovieListItemModel>();
   @Output() delete = new EventEmitter<MovieListItemModel>();
+  @Output() details = new EventEmitter<MovieListItemModel>();
 
   constructor() {}
 
@@ -25,6 +26,10 @@ export class MoviesListComponent implements OnInit {
 
   onEdit(item: MovieListItemModel): void {
     this.edit.emit(item);
+  }
+
+  onViewDetails(item: MovieListItemModel): void {
+    this.details.emit(item);
   }
 
   onDelete(item: MovieListItemModel): void {

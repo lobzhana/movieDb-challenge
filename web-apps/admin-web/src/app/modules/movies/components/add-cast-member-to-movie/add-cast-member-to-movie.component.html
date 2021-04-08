@@ -1,0 +1,52 @@
+<h1 matDialogTitle>Add Cast Member To Movie</h1>
+<mat-dialog-content>
+  <form class="search-form" [formGroup]="form" (submit)="submit()">
+    <mat-form-field>
+      <mat-label>Search Existing Actors</mat-label>
+      <input
+        type="text"
+        [matAutocomplete]="autoComplete"
+        matInput
+        formControlName="searchValue"
+      />
+    </mat-form-field>
+
+    <mat-autocomplete
+      (optionSelected)="selectCastMember($event.option.value)"
+      [displayWith]="displayCastName"
+      #autoComplete
+    >
+      <mat-option [value]="cast" *ngFor="let cast of searchResult">
+        <img
+          style="width: 30px; height: 30px"
+          [src]="cast.photo?.fileName | toImgSrc"
+        />
+        {{ cast.firstName }} {{ cast.lastName }}
+      </mat-option>
+    </mat-autocomplete>
+
+    <div class="selected-cast">
+      <mat-chip-list>
+        <mat-chip *ngFor="let cast of selectedCasts" [removable]="true">
+          {{ cast.firstName }} {{ cast.lastName }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <mat-chip
+          (click)="addNew()"
+          class="new-cast-member"
+          [color]="'primary'"
+          selected
+        >
+          Add New
+          <mat-icon matChipTrailingIcon>add</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <div class="form-footer">
+      <button class="btn" type="submit" mat-raised-button color="primary">
+        Save
+      </button>
+    </div>
+  </form>
+</mat-dialog-content>

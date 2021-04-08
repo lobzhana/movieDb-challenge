@@ -1,16 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {
   CountryModel,
-  EmptyMovieModel,
   LanguageModel,
   MovieModel,
   StudioModel,
 } from 'src/app/core/movies/models';
-import { MoviesService } from 'src/app/core/movies/services/movies.service';
+import { routerNavigate } from 'src/app/store/actions';
 import { PATHS } from 'src/app/_shared/paths/paths';
+import { movieFormActions } from '../../store/movies/actions';
+import { moviesSelectors } from '../../store/movies/selectors';
+import { MovieModuleState } from '../../store/state';
 
 @UntilDestroy()
 @Component({
@@ -23,34 +26,25 @@ export class AddNewMovieContainerComponent implements OnInit {
   languages: Observable<LanguageModel[]>;
   countries: Observable<CountryModel[]>;
   studios: Observable<StudioModel[]>;
-  movie: MovieModel = EmptyMovieModel();
+  movie: Observable<MovieModel>;
 
-  constructor(private moviesService: MoviesService, private router: Router) {}
+  constructor(private store: Store<MovieModuleState>) {
+    this.languages = this.store.select(moviesSelectors.languages);
+    this.countries = this.store.select(moviesSelectors.countries);
+    this.studios = this.store.select(moviesSelectors.studios);
+    this.movie = this.store.select(moviesSelectors.currentMovie);
+  }
 
   ngOnInit(): void {
-    this.languages = this.moviesService.getLanguages();
-    this.countries = this.moviesService.getCountries();
-    this.studios = this.moviesService.getStudios();
+    this.store.dispatch(movieFormActions.getFormData());
+    this.store.dispatch(movieFormActions.initMovieForAdd());
   }
 
   addMovie(movie: MovieModel): void {
-    this.moviesService
-      .save(movie)
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (response) => {
-          if (response.ok) {
-            this.router.navigate([PATHS.MOVIES.LIST]);
-          }
-        },
-        (error) => {
-          console.log('movie add failed');
-          console.log(error);
-        }
-      );
+    this.store.dispatch(movieFormActions.saveMovie({ movie }));
   }
 
   cancel(): void {
-    console.log('add movie canceled');
+    this.store.dispatch(routerNavigate({ uri: PATHS.MOVIES.LIST }));
   }
 }

@@ -1,0 +1,18 @@
+<div class="container">
+  <h1>Details</h1>
+  <div class="actions">
+    <div class="buttons">
+      <button (click)="addCast()" color="primary" mat-raised-button>
+        <mat-icon>add</mat-icon>
+        ADD CAST MEMBER
+      </button>
+    </div>
+  </div>
+  <div class="list-of-cast-members">
+    <app-cast-members-list
+      [castMembers]="castMembers | async"
+      (remove)="removeCastMember($event)"
+      (edit)="editCastMember($event)"
+    ></app-cast-members-list>
+  </div>
+</div>

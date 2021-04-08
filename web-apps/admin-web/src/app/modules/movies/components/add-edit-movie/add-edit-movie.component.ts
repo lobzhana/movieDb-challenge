@@ -5,20 +5,17 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
-  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { MovieCoverService } from 'src/app/core/movies/services/movies.service';
+import { ImageUploadService } from 'src/app/core/movies/services/movies.service';
 import {
   MovieModel,
   CountryModel,
   LanguageModel,
   StudioModel,
-  EmptyMovieModel,
 } from '../../../../core/movies/models';
 @UntilDestroy()
 @Component({
@@ -45,7 +42,7 @@ export class AddEditMovieComponent implements OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private coverService: MovieCoverService,
+    private imageUploader: ImageUploadService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -105,7 +102,7 @@ export class AddEditMovieComponent implements OnChanges {
       return;
     }
 
-    this.coverService
+    this.imageUploader
       .upload(files[0])
       .pipe(untilDestroyed(this))
       .subscribe((upload) => {

@@ -30,6 +30,7 @@ namespace api
             services.AddScoped<IStudiosRepository, StudiosRepository>();
             services.AddScoped<ILanguagesRepository, LanguagesRepository>();
             services.AddScoped<ICountriesRepository, CountriesRepository>();
+            services.AddScoped<ICastRepository, CastRepository>();
 
             //services.AddCors();
             services.AddControllers();
